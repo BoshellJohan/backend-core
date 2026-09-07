@@ -6,6 +6,8 @@
   "scripts": {
     "test": "jest --runInBand --detectOpenHandles",
     "test:watch": "jest --watch",
+    "test:load": "node --import tsx ./tests/test-load.ts",
+    "cleanup:test-users": "node --import tsx ./tests/delete-test-users.ts",
     "start": "node --import tsx --import ./src/instrumentation.ts src/server.ts",
     "dev": "tsx watch --import ./src/instrumentation.ts src/server.ts | pino-pretty"
   },
