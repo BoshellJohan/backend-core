@@ -7,7 +7,6 @@ import { ConflictError } from '../../common/errors/ConflictError.js';
 class UsersService {
     async getUsers(){
         const users = await usersRepository.findAll();
-        if(!users) throw new NotFoundError('Users not found');
         return users;
     }
 
