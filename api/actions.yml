@@ -1,0 +1,76 @@
+name: Run Tests
+
+on: 
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: txs_app
+          POSTGRES_PASSWORD: txs_app_1234
+          POSTGRES_DB: txs
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+      - run: npx prisma generate
+      - run: npm test
+        env:
+          DATABASE_URL: postgresql://txs_app:txs_app_1234@localhost:5432/txs?schema=public
+  load-test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: txs_app
+          POSTGRES_PASSWORD: txs_app_1234
+          POSTGRES_DB: txs
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+      - run: npx prisma generate
+      - name: Levantar contenedores
+        run: docker compose up --build -d --wait
+      - name: Correr prueba de carga
+        run: npm run test:load
+        env:
+          DATABASE_URL: postgresql://txs_app:txs_app_1234@localhost:5432/txs?schema=public
+      - name: Apagar contenedores
+        if: always()
+        run: docker compose down -v
