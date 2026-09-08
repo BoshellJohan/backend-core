@@ -1,4 +1,4 @@
-# txs-api
+# backend-core
 
 Núcleo de backend en Node.js pensado para reutilizarse como punto de partida de
 una API en producción. No es un CRUD de demostración: trae resueltas las piezas
