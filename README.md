@@ -94,6 +94,10 @@ docker compose up --build
 Eso levanta Nginx en `http://localhost:80`, las tres réplicas y Jaeger en
 `http://localhost:16686`.
 
+Cada réplica expone `/health`, y Docker no da el servicio por levantado hasta que
+las tres responden, de modo que Nginx nunca reparte hacia un contenedor que aún
+no acepta peticiones.
+
 Para desarrollo, con recarga en caliente y logs legibles:
 
 ```bash
@@ -133,6 +137,7 @@ npm run dev
 | `POST` | `/password/forgot-password` | Envía el correo de recuperación. Con rate limit |
 | `POST` | `/password/reset-password` | Fija la contraseña nueva con el token del correo |
 | `GET` | `/dashboard` | Ruta de ejemplo protegida |
+| `GET` | `/health` | Estado del proceso. Lo consulta el healthcheck de Docker |
 
 Ninguna respuesta expone el hash de la contraseña.
 

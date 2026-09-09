@@ -5,6 +5,7 @@ import express from 'express';
 import authRouter from './modules/auth/auth.routes.js';
 import usersRouter from './modules/users/users.routes.js'
 import passwordRouter from './modules/password/password.routes.js'
+import healthRouter from './modules/health/health.routes.js'
 
 import { authMiddleware } from './middlewares/auth.middleware.js';
 import { errorHandler } from './common/middleware/errorHandler.js';
@@ -62,6 +63,7 @@ app.use((req, res, next) => {
 app.use('/auth', authRouter);
 app.use('/users', usersRouter);
 app.use('/password', passwordRouter);
+app.use('/health', healthRouter);
 
 app.get('/dashboard', authMiddleware, (req, res) => {
     res.json({message: 'Ruta protegida', user: req.user})

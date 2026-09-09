@@ -10,6 +10,12 @@ services:
 
   backend1:
     build: .
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
     container_name: backend1
     env_file: ./.env
     extra_hosts:
@@ -18,6 +24,12 @@ services:
 
   backend2:
     build: .
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
     container_name: backend2
     env_file: ./.env
     extra_hosts:
@@ -26,6 +38,12 @@ services:
 
   backend3:
     build: .
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
     container_name: backend3
     env_file: ./.env
     extra_hosts:
