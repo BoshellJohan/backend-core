@@ -34,6 +34,7 @@ jobs:
           cache: npm
 
       - run: npm ci
+      - run: npx prisma migrate deploy
       - run: npx prisma generate
       - run: npm test
         env:
@@ -64,7 +65,21 @@ jobs:
           cache: npm
 
       - run: npm ci
+      - run: npx prisma migrate deploy
       - run: npx prisma generate
+      - name: Obtener variables de entorno
+        run: |
+          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
+          echo "ACCESS_TOKEN_EXPIRATION=10m" >> .env
+          echo "REFRESH_TOKEN_EXPIRATION=8h" >> .env
+          echo "JWT_ACCESS=${{ secrets.JWT_ACCESS }}" >> .env
+          echo "JWT_REFRESH=${{ secrets.JWT_REFRESH }}" >> .env
+          echo "LOG_LEVEL=info" >> .env
+          echo "OTEL_SERVICE_NAME=txs-api" >> .env
+          echo "OTEL_SERVICE_VERSION=1.0.0" >> .env
+          echo "OTEL_EXPORTER_OTLP_ENDPOINT=http://jaeger:4318" >> .env
+          echo "OTEL_TRACES_EXPORTER=otlp" >> .env
+          echo "PORT=3000" >> .env
       - name: Levantar contenedores
         run: docker compose up --build -d --wait
       - name: Correr prueba de carga
