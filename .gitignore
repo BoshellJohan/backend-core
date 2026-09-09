@@ -1,7 +1,14 @@
 node_modules/
 package-lock.json
+
+# Las variables de entorno quedan fuera del control de versiones
 .env
 env.d.ts
-api/.agents
-api/.claude
-api/.windsurf
+
+# Cliente de Prisma, se regenera con `npx prisma generate`
+/src/generated/prisma
+
+# Configuracion local de asistentes
+.agents
+.claude
+.windsurf
