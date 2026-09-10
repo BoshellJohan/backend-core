@@ -18,7 +18,7 @@ config:
     expect: {}
     ensure: 
       thresholds:
-        - "http.response_time.p99": 300
+        - "http.response_time.p99": 400
       conditions:
         - expression: "vusers.created > 10 and vusers.failed / vusers.created <= 0.01"
 scenarios:

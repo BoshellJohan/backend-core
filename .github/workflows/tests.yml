@@ -91,8 +91,8 @@ jobs:
           echo "OTEL_EXPORTER_OTLP_ENDPOINT=http://jaeger:4318" >> .env
           echo "OTEL_TRACES_EXPORTER=otlp" >> .env
           echo "FRONT_URL=http://localhost:4200" >> .env
-          echo "EMAIL_USER=tests@example.com" >> .env
-          echo "EMAIL_PASSWORD=tests" >> .env
+          echo "EMAIL_USER=${{ EMAIL_USER }}" >> .env
+          echo "EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }}" >> .env
           echo "PORT=3000" >> .env
       - name: Levantar contenedores
         run: docker compose up --build -d --wait
