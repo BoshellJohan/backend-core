@@ -1,5 +1,4 @@
 node_modules/
-package-lock.json
 
 # Las variables de entorno quedan fuera del control de versiones
 .env
