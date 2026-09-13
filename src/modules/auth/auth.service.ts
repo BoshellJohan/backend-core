@@ -38,7 +38,7 @@ class AuthService {
     
             } catch (error){
                 if(error instanceof NotFoundError){
-                    throw new UnauthorizedError('Invalid credentials or user not found');
+                    throw new UnauthorizedError('Invalid credentials or user does not exist');
                 }
 
                 if(error instanceof Error){

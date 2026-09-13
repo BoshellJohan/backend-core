@@ -66,7 +66,7 @@ app.use('/password', passwordRouter);
 app.use('/health', healthRouter);
 
 app.get('/dashboard', authMiddleware, (req, res) => {
-    res.json({message: 'Ruta protegida', user: req.user})
+    res.json({message: 'Protected route', user: req.user})
 });
 
 app.use(errorHandler);
