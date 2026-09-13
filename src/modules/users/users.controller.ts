@@ -3,6 +3,7 @@ import usersService from './users.service.js';
 import { RegisterDto } from './dtos/users.dto.js';
 import { BadRequestError } from '../../common/errors/BadRequestError.js';
 import { UnauthorizedError } from '../../common/errors/UnauthorizedError.js';
+import { registerSchema } from './schemas/users.schemas.js';
 
 class UsersController {
     async user(req: Request, res: Response){
