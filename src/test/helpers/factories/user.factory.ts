@@ -7,7 +7,7 @@ export async function createTestUser( overrides: {
     role?: 'applicant' | 'investor' | 'admin' 
 } = {}) {
     const email = overrides.email ?? 'test@gmail.com';
-    const password = overrides.password ?? '1234';
+    const password = overrides.password ?? '123456789A*';
     const hashPassword = await hashString(password);
 
     const user = await getDb().users.create({
