@@ -1,4 +1,4 @@
-import { rateLimit } from 'express-rate-limit';
+import { ipKeyGenerator, rateLimit } from 'express-rate-limit';
 
 /* 
     Limitador para registro
@@ -9,7 +9,7 @@ import { rateLimit } from 'express-rate-limit';
 export const registerLimiter = rateLimit({
     windowMs: 60 * 60 * 1000,
     max: 3,
-    message: 'Demasiados intentos de registro. Intenta de nuevo más tarde',
+    message: 'Too many registration attempts. Please try again later.',
     statusCode: 429,
     standardHeaders: true,
     legacyHeaders: false,
@@ -17,12 +17,13 @@ export const registerLimiter = rateLimit({
         return req.user?.role === 'admin';
     },
     keyGenerator: (req) => {
-        return req.ip || req.socket.remoteAddress || 'unknown';
+        return ipKeyGenerator(req.ip || req.socket.remoteAddress || 'unknown');
     },
     handler: (req, res) => {
         res.status(429).json({
             success: false,
-            error: 'Demasiados intentos de registro. Intente de nuevo en 1 hora.',
+            code: 429,
+            message: 'Too many registration attempts. Please try again in 1 hour.',
         });
     },
 });
@@ -36,19 +37,20 @@ export const registerLimiter = rateLimit({
 export const loginLimiter = rateLimit({
     windowMs: 15 * 60 * 1000,
     max: 5,
-    message: 'Demasiados intentos de inicio de sesión. Intente de nuevo más tarde.',
+    message: 'Too many login attempts. Please try again later.',
     standardHeaders: true,
     legacyHeaders: false,
     skip: (req) => {
         return req.user?.role === 'admin';
     },
     keyGenerator: (req) => {
-        return req.ip || req.socket.remoteAddress || 'unknown';
+        return ipKeyGenerator(req.ip || req.socket.remoteAddress || 'unknown');
     },
     handler: (req, res) => {
         return res.status(429).json({
             success: false,
-            message: 'Demasiados intentos de inicio de sesión. Intente de nuevo en 15 minutos.'
+            code: 429,
+            message: 'Too many login attempts. Please try again in 15 minutes.'
         });
     },
 });
@@ -62,19 +64,20 @@ export const loginLimiter = rateLimit({
 export const forgotPasswordLimiter = rateLimit({
     windowMs: 30 * 60 * 1000,
     max: 3,
-    message: 'Demasiados intentos de recuperación de contraseña. Intente de nuevo más tarde.',
+    message: 'Too many password recovery attempts. Please try again later.',
     standardHeaders: true,
     legacyHeaders: false,
     skip: (req) => {
         return req.user?.role === 'admin';
     },
     keyGenerator: (req) => {
-        return req.ip || req.socket.remoteAddress || 'unknown';
+        return ipKeyGenerator(req.ip || req.socket.remoteAddress || 'unknown');
     },
     handler: (req, res) => {
         return res.status(429).json({
             success: false,
-            message: 'Demasiados intentos de recuperación de contraseña. Intente de nuevo en 30 minutos.'
+            code: 429,
+            message: 'Too many password recovery attempts. Please try again in 30 minutes.'
         });
     },
 });

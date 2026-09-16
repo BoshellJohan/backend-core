@@ -9,7 +9,7 @@ describe('POST /auth/login', () => {
     it('devuelve accessToken y refreshToken con credenciales válidas', async () => {
         await withTestTransaction(async () => {
             const email = 'prueba@gmail.com';
-            const password = '1234';
+            const password = '123456789A*';
             const hashPassword = await hashString(password);
             await getDb().users.create({
                 data: {
@@ -30,7 +30,7 @@ describe('POST /auth/login', () => {
     it('devuelve un error 401 debido al email no registrado', async () => {
         await withTestTransaction(async () => {
             const email = 'test@gmail.com';
-            const password = '1234';
+            const password = '123456789A*';
             const response = await request(app).post('/auth/login').send({email, password});
 
             expect(response.statusCode).toBe(401);
@@ -41,8 +41,8 @@ describe('POST /auth/login', () => {
     it('devuelve un error 401 debido a contraseña incorrecta', async () => {
         await withTestTransaction(async () => {
             const email = 'test@gmail.com'
-            await createTestUser({email, password: '1234'});
-            const response = await request(app).post('/auth/login').send({email, password: '123'});
+            await createTestUser({email, password: '123456789A*'});
+            const response = await request(app).post('/auth/login').send({email, password: '123456789B*'});
 
             expect(response.statusCode).toBe(401);
             expect(response.body.success).toBe(false);

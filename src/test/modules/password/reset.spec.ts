@@ -16,7 +16,7 @@ describe('POST /password/reset', () => {
             const sendPasswordResetEmailFn = jest.mocked(sendPasswordResetEmail)
             const token = sendPasswordResetEmailFn.mock.calls[0][1]; //Segundo argumento de sendPasswordResetEmail
 
-            const newPassword = 'xxxx';
+            const newPassword = '123456789A*';
             const responseReset = await request(app).post('/password/reset-password').send({passwordToken: token, newPassword});
 
             const responseLogin = await request(app).post('/auth/login').send({email, password: newPassword});

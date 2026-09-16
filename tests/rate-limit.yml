@@ -6,7 +6,7 @@ config:
       arrivalRate: 4
   variables:
     email: "jose@gmail.com"
-    password: "1234"
+    password: "123456789A*"
   plugins:
     expect: {}
 scenarios:
